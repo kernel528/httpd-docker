@@ -3,7 +3,7 @@ pipeline:
     when:
       branch: master
       event: push
-    image: kernel528/alpine:latest
+    image: kernel528/httpd:latest
     secrets: [ docker_username, docker_password ]
     commands:
       - "uname -a"
