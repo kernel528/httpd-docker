@@ -1,0 +1,29 @@
+pipeline:
+  ### Build docker image
+  docker-publish-httpd:
+    when:
+      branch: 2.4
+      event: push
+    image: plugins/docker
+    repo: kernel528/httpd
+    secrets: [ docker_username, docker_password ]
+    dockerfile: 2.4/Dockerfile
+    tag:
+      - latest
+      - 2.4.37
+      - 2.4.37-${DRONE_COMMIT:0:8}
+
+# Post notification to orpheus slack channel
+  slack:
+    when:
+      status:
+        - success
+        - failure
+      event:
+        - push
+        - tag
+    image: plugins/slack
+    channel: orpheus-alerts
+    webhook: https://hooks.slack.com/services/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
+    template: >
+      Drone build {{uppercase build.status}} for {{ build.link }} with git commit {{ truncate build.commit 8 }} to git branch ({{ build.branch }}) by {{ build.author }}.
