@@ -1,5 +1,6 @@
-FROM kernel528/openjre:8u181
-LABEL maintainer=kernel528
+FROM kernel528/openjre:8u191
+
+LABEL maintainer=kernel528@gmail.com
 
 # ensure www-data user exists
 RUN set -x \
