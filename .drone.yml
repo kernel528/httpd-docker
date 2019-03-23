@@ -7,7 +7,7 @@ pipeline:
     image: plugins/docker
     repo: kernel528/httpd
     secrets: [ docker_username, docker_password ]
-    dockerfile: 2.4/Dockerfile
+    dockerfile: Dockerfile
     tag:
       - latest
       - 2.4.38

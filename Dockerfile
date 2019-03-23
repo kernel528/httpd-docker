@@ -140,8 +140,8 @@ RUN set -eux; \
 	apk add --virtual .httpd-rundeps $runDeps; \
 	apk del .build-deps
 
-COPY 2.4/httpd-foreground /usr/local/bin/
-COPY 2.4/htdocs/index.html /usr/local/apache2/htdocs/index.html
+COPY httpd-foreground /usr/local/bin/
+COPY htdocs/index.html /usr/local/apache2/htdocs/index.html
 
 EXPOSE 80
 CMD ["httpd-foreground"]
