@@ -5,3 +5,4 @@
 * v1.2.0 - Updated to build with new drone 1.0.0-rc5
 * v1.3.0 - Updated to use alpine 3.9.2, openjdk8-201.08-r0 and httpd v2.4.38
 * v2.0.0 - Updated to use latest alpine 3.9.2 build, changed folder struture
+* v2.0.1 - Updated to use alpine 3.9.4 and httpd 2.4.39

@@ -10,8 +10,8 @@ pipeline:
     dockerfile: Dockerfile
     tag:
       - latest
-      - 2.4.38
-      - 2.4.38-${DRONE_COMMIT:0:8}-drone-build-${DRONE_BUILD_NUMBER}
+      - 2.4.39
+      - 2.4.39-${DRONE_COMMIT:0:8}-drone-build-${DRONE_BUILD_NUMBER}
 
 # Post notification to orpheus slack channel
   slack:
