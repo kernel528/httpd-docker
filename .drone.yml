@@ -24,6 +24,6 @@ pipeline:
         - tag
     image: plugins/slack
     channel: orpheus-alerts
-    webhook: https://hooks.slack.com/services/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
+    webhook: https://hooks.slack.com/services/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
     template: >
       Drone build {{uppercase build.status}} for {{ build.link }} with git commit {{ truncate build.commit 8 }} to git branch ({{ build.branch }}) by {{ build.author }}.
