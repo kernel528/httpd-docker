@@ -6,3 +6,4 @@
 * v1.3.0 - Updated to use alpine 3.9.2, openjdk8-201.08-r0 and httpd v2.4.38
 * v2.0.0 - Updated to use latest alpine 3.9.2 build, changed folder struture
 * v2.0.1 - Updated to use alpine 3.9.4 and httpd 2.4.39
+* v3.0.0 - Updated to use alpine 3.10.1 and to build straight off kernel528/alpine:3.10.1
