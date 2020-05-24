@@ -8,3 +8,4 @@
 * v2.0.1 - Updated to use alpine 3.9.4 and httpd 2.4.39
 * v3.0.0 - Updated to use alpine 3.10.1 and to build straight off kernel528/alpine:3.10.1
 * v4.0.0 - Updated to use alpine 3.11.6 and httpd v2.4.43
+* v4.0.1 - Updated to trigger buld with drone.
