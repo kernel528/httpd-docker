@@ -11,3 +11,4 @@
 * v4.0.1 - Updated to trigger buld with drone.
 * v4.1.0 - Updated to alpine v3.12.0
 * v4.1.1 - Another attempt to trigger drone build: 2020-06-28, 2, 3
+* v4.1.2 - Updated to httpd-2.4.46
