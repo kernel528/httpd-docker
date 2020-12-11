@@ -7,3 +7,4 @@
 * v2.0.0 - Updated folder structure and to use latest alpine 3.9.2 and openjdk8u201
 * v3.0.0 - Updated to reflect latest changes to use alpine 3.10.1
 * v3.0.1 - Updated to trigger drone build.
+* v3.0.2 - Updated to alpine v3.12.2
