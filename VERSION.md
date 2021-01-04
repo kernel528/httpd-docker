@@ -13,3 +13,4 @@
 * v4.1.1 - Another attempt to trigger drone build: 2020-06-28, 2, 3
 * v4.1.2 - Updated to httpd-2.4.46
 * v4.1.3 - Updated to alpine v3.12.2
+* v4.1.4 - Updated to alpine v3.12.3
