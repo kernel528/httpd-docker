@@ -1,4 +1,9 @@
+FROM kernel528/alpine:3.14.0
+
+LABEL maintainer=kernel528@gmail.com
+
 # ensure www-data user exists
+
 RUN set -x \
 	&& adduser -u 82 -D -S -G www-data www-data
 # 82 is the standard uid/gid for "www-data" in Alpine
