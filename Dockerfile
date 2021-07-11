@@ -1,4 +1,4 @@
-FROM kernel528/alpine:3.12.3
+FROM kernel528/alpine:3.14.0
 
 LABEL maintainer=kernel528@gmail.com
 
@@ -17,8 +17,8 @@ RUN mkdir -p "$HTTPD_PREFIX" \
 	&& chown www-data:www-data "$HTTPD_PREFIX"
 WORKDIR $HTTPD_PREFIX
 
-ENV HTTPD_VERSION 2.4.46
-ENV HTTPD_SHA256 740eddf6e1c641992b22359cabc66e6325868c3c5e2e3f98faf349b61ecf41ea
+ENV HTTPD_VERSION 2.4.48
+ENV HTTPD_SHA256 1bc826e7b2e88108c7e4bf43c026636f77a41d849cfb667aa7b5c0b86dbf966c
 
 # https://httpd.apache.org/security/vulnerabilities_24.html
 ENV HTTPD_PATCHES=""
