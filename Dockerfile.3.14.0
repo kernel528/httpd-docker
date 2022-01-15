@@ -3,6 +3,7 @@ FROM kernel528/alpine:3.15.0
 LABEL maintainer=kernel528@gmail.com
 
 # ensure www-data user exists
+
 RUN set -x \
 	&& adduser -u 82 -D -S -G www-data www-data
 # 82 is the standard uid/gid for "www-data" in Alpine
@@ -16,16 +17,6 @@ RUN mkdir -p "$HTTPD_PREFIX" \
 	&& chown www-data:www-data "$HTTPD_PREFIX"
 WORKDIR $HTTPD_PREFIX
 
-# install httpd runtime dependencies
-# https://httpd.apache.org/docs/2.4/install.html#requirements
-RUN set -eux; \
-	apk add --no-cache \
-		apr \
-		apr-util \
-		apr-util-ldap \
-		perl \
-	;
-
 ENV HTTPD_VERSION 2.4.52
 ENV HTTPD_SHA256 0127f7dc497e9983e9c51474bed75e45607f2f870a7675a86dc90af6d572f5c9
 
@@ -35,7 +26,14 @@ ENV HTTPD_PATCHES=""
 # see https://httpd.apache.org/docs/2.4/install.html#requirements
 RUN set -eux; \
 	\
+	runDeps=' \
+		apr \
+		apr-util \
+		apr-util-ldap \
+		perl \
+	'; \
 	apk add --no-cache --virtual .build-deps \
+		$runDeps \
 		apr-dev \
 		apr-util-dev \
 		ca-certificates \
@@ -74,7 +72,6 @@ RUN set -eux; \
 # https://issues.apache.org/jira/browse/INFRA-8753?focusedCommentId=14735394#comment-14735394
 			'https://www.apache.org/dyn/closer.cgi?action=download&filename=' \
 # if the version is outdated (or we're grabbing the .asc file), we might have to pull from the dist/archive :/
-			https://downloads.apache.org/ \
 			https://www-us.apache.org/dist/ \
 			https://www.apache.org/dist/ \
 			https://archive.apache.org/dist/ \
@@ -93,7 +90,7 @@ RUN set -eux; \
 # see https://httpd.apache.org/download.cgi#verify
 	ddist 'httpd.tar.bz2.asc' "httpd/httpd-$HTTPD_VERSION.tar.bz2.asc"; \
 	export GNUPGHOME="$(mktemp -d)"; \
-# $ docker run --rm buildpack-deps:bullseye-curl bash -c 'wget -qO- https://downloads.apache.org/httpd/KEYS | gpg --batch --import &> /dev/null && gpg --batch --list-keys --with-fingerprint --with-colons' | awk -F: '$1 == "pub" && $2 == "-" { pub = 1 } pub && $1 == "fpr" { fpr = $10 } $1 == "sub" { pub = 0 } pub && fpr && $1 == "uid" && $2 == "-" { print "#", $10; print "\t\t" fpr " \\"; pub = 0 }'
+# $ docker run --rm buildpack-deps:buster-curl bash -c 'wget -qO- https://downloads.apache.org/httpd/KEYS | gpg --batch --import &> /dev/null && gpg --batch --list-keys --with-fingerprint --with-colons' | awk -F: '$1 == "pub" && $2 == "-" { pub = 1 } pub && $1 == "fpr" { fpr = $10 } $1 == "sub" { pub = 0 } pub && fpr && $1 == "uid" && $2 == "-" { print "#", $10; print "\t\t" fpr " \\"; pub = 0 }'
 	for key in \
 # Rodent of Unusual Size (DSA) <coar@ACM.Org>
 		DE29FB3971E71543FD2DC049508EAEC5302DA568 \
@@ -161,8 +158,6 @@ RUN set -eux; \
 		93525CFCF6FDFFB3FD9700DD5A4B10AE43B56A27 \
 # Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 		C55AB7B9139EB2263CD1AABC19B033D1760C227B \
-# Stefan Eissing (icing) <stefan@eissing.org>
-		26F51EF9A82F4ACB43F1903ED377C9E7D1944C66 \
 	; do \
 		gpg --batch --keyserver keyserver.ubuntu.com --recv-keys "$key"; \
 	done; \
@@ -205,21 +200,17 @@ RUN set -eux; \
 		-e 's!^(\s*CustomLog)\s+\S+!\1 /proc/self/fd/1!g' \
 		-e 's!^(\s*ErrorLog)\s+\S+!\1 /proc/self/fd/2!g' \
 		-e 's!^(\s*TransferLog)\s+\S+!\1 /proc/self/fd/1!g' \
-		-e 's!^(\s*User)\s+daemon\s*$!\1 www-data!g' \
-		-e 's!^(\s*Group)\s+daemon\s*$!\1 www-data!g' \
 		"$HTTPD_PREFIX/conf/httpd.conf" \
 		"$HTTPD_PREFIX/conf/extra/httpd-ssl.conf" \
 	; \
-	grep -E '^\s*User www-data$' "$HTTPD_PREFIX/conf/httpd.conf"; \
-	grep -E '^\s*Group www-data$' "$HTTPD_PREFIX/conf/httpd.conf"; \
 	\
-	deps="$( \
+	runDeps="$runDeps $( \
 		scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
 			| tr ',' '\n' \
 			| sort -u \
 			| awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
 	)"; \
-	apk add --no-network --virtual .httpd-so-deps $deps; \
+	apk add --no-network --virtual .httpd-rundeps $runDeps; \
 	apk del --no-network .build-deps; \
 	\
 # smoke test
