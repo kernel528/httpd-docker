@@ -22,13 +22,13 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
-      repo: kernel528/alpine
+      repo: kernel528/httpd
       tags:
         - latest
         - 2.4.59
         - 2.4.59-${DRONE_COMMIT:0:8}-drone-build-${DRONE_BUILD_NUMBER}
   - name: docker-test
-    image: kernel528/alpine:latest
+    image: kernel528/httpd:latest
     when:
       branch:
         - main
