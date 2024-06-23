@@ -1,4 +1,4 @@
-FROM kernel528/alpine:3.15.0
+FROM kernel528/alpine:3.20.1
 
 LABEL maintainer=kernel528@gmail.com
 
@@ -23,11 +23,13 @@ RUN set -eux; \
 		apr \
 		apr-util \
 		apr-util-ldap \
+# https://github.com/docker-library/httpd/issues/214
+		ca-certificates \
 		perl \
 	;
 
-ENV HTTPD_VERSION 2.4.52
-ENV HTTPD_SHA256 0127f7dc497e9983e9c51474bed75e45607f2f870a7675a86dc90af6d572f5c9
+ENV HTTPD_VERSION 2.4.59
+ENV HTTPD_SHA256 ec51501ec480284ff52f637258135d333230a7d229c3afa6f6c2f9040e321323
 
 # https://httpd.apache.org/security/vulnerabilities_24.html
 ENV HTTPD_PATCHES=""
@@ -38,12 +40,12 @@ RUN set -eux; \
 	apk add --no-cache --virtual .build-deps \
 		apr-dev \
 		apr-util-dev \
-		ca-certificates \
 		coreutils \
 		dpkg-dev dpkg \
 		gcc \
 		gnupg \
 		libc-dev \
+		patch \
 		# mod_md
 		curl-dev \
 		jansson-dev \
@@ -93,7 +95,7 @@ RUN set -eux; \
 # see https://httpd.apache.org/download.cgi#verify
 	ddist 'httpd.tar.bz2.asc' "httpd/httpd-$HTTPD_VERSION.tar.bz2.asc"; \
 	export GNUPGHOME="$(mktemp -d)"; \
-# $ docker run --rm buildpack-deps:bullseye-curl bash -c 'wget -qO- https://downloads.apache.org/httpd/KEYS | gpg --batch --import &> /dev/null && gpg --batch --list-keys --with-fingerprint --with-colons' | awk -F: '$1 == "pub" && $2 == "-" { pub = 1 } pub && $1 == "fpr" { fpr = $10 } $1 == "sub" { pub = 0 } pub && fpr && $1 == "uid" && $2 == "-" { print "#", $10; print "\t\t" fpr " \\"; pub = 0 }'
+# $ docker run --rm buildpack-deps:bookworm-curl bash -c 'wget -qO- https://downloads.apache.org/httpd/KEYS | gpg --batch --import &> /dev/null && gpg --batch --list-keys --with-fingerprint --with-colons' | awk -F: '$1 == "pub" && $2 == "-" { pub = 1 } pub && $1 == "fpr" { fpr = $10 } $1 == "sub" { pub = 0 } pub && fpr && $1 == "uid" && $2 == "-" { print "#", $10; print "\t\t" fpr " \\"; pub = 0 }'
 	for key in \
 # Rodent of Unusual Size (DSA) <coar@ACM.Org>
 		DE29FB3971E71543FD2DC049508EAEC5302DA568 \
@@ -229,8 +231,6 @@ RUN set -eux; \
 STOPSIGNAL SIGWINCH
 
 COPY httpd-foreground /usr/local/bin/
-
-COPY htdocs/index.html /usr/local/apache2/htdocs/index.html
 
 EXPOSE 80
 CMD ["httpd-foreground"]
