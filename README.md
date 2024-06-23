@@ -5,14 +5,14 @@
 These images are based on the official httpd docker hub release. The source Dockerfile is used as a base.
 
 ### Overview
-* The images are based on the kernel528/alpine 
+* The images are based on the kernel528/alpine
 * The httpd versions are broken out into subfolders based on the versions, e.g.
     * 2.4
 * This repo is based on:  https://github.com/docker-library/httpd
 
 ### How to start:
 ```
-docker run -dit --rm --name httpd-docker --hostname httpd-docker -p 80:80 kernel528/httpd:2.4.39
+docker run -dit --rm --name httpd-docker --hostname httpd-docker -p 80:80 kernel528/httpd:2.4.48
 ```
 ```
 Open web browser to http://localhost
@@ -27,7 +27,7 @@ COPY ./my-httpd.conf /usr/local/apache2/conf/httpd.conf
 
 ### Add custom htdocs at run time:
 ```
-docker run -dit --rm --name httpd --hostname httpd -p 80:80 -v "$PWD/htdocs":/usr/local/apache2/htdocs/ kernel528/httpd:2.4.39
+docker run -dit --rm --name httpd --hostname httpd -p 80:80 -v "$PWD/htdocs":/usr/local/apache2/htdocs/ kernel528/httpd:2.4.48
 ```
 
 ### Authors
