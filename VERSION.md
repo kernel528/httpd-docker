@@ -18,3 +18,4 @@
 * v4.2.1 - Updated to alpine 3.14.2
 * v5.0.0 - Updated to alpine 3.15.0, httpd v2.4.52
 * v5.1.0 - Updated to alpine 3.20.1, httpd v2.4.59
+* v5.1.1 - Uses alpine 3.20.1, updated httpd to v2.4.62
