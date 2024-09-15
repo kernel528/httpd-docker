@@ -38,7 +38,7 @@ steps:
   - name: notify
     image: plugins/slack
     settings:
-      webhook: https://hooks.slack.com/services/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
+      webhook: https://hooks.slack.com/services/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
     when:
       status:
         - failure
