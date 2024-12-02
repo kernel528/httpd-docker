@@ -1,7 +1,8 @@
 kind: pipeline
 type: docker
-name: default
+name: httpd-image-build
 
+# Trigger conditions
 trigger:
   branch:
     - '2.4'
@@ -11,7 +12,9 @@ trigger:
     - push
     - pull_request
 
+# Pipeline steps
 steps:
+  # Build image
   - name: docker-build
     image: plugins/docker
     when:
@@ -27,6 +30,8 @@ steps:
         - latest
         - 2.4.62
         - 2.4.62-${DRONE_COMMIT:0:8}-drone-build-${DRONE_BUILD_NUMBER}
+
+  # Test image
   - name: docker-test
     image: kernel528/httpd:latest
     when:
@@ -35,10 +40,13 @@ steps:
     commands:
       - cat /etc/alpine-release
       - "httpd -v"
+
+  # Slack notification
   - name: notify
     image: plugins/slack
     settings:
-      webhook: https://hooks.slack.com/services/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
+      webhook:
+        from_secret: slack_webhook
     when:
       status:
         - failure
