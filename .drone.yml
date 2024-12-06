@@ -20,6 +20,8 @@ steps:
     when:
       branch:
         - '2.4'
+      event:
+        - push
     settings:
       username:
         from_secret: docker_username
@@ -37,6 +39,8 @@ steps:
     when:
       branch:
         - main
+      event:
+        - push
     commands:
       - cat /etc/alpine-release
       - "httpd -v"
