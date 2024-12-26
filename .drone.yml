@@ -1,28 +1,22 @@
 kind: pipeline
 type: docker
-name: httpd-image-build
+name: httpd-amd64
 
-# Trigger conditions
 trigger:
   branch:
     - '2.4'
-    - main
   event:
-    - custom
-    - push
     - pull_request
 
-# Pipeline steps
+# Build the docker image for amd64 architecture
 steps:
-  # Build image
-  - name: docker-build
+  - name: httpd-image-build-amd64
     image: plugins/docker
-    when:
-      branch:
-        - '2.4'
-      event:
-        - push
+    environment:
+      DOCKER_BUILDKIT: 1
     settings:
+      platforms:
+        - linux/amd64
       username:
         from_secret: docker_username
       password:
@@ -30,11 +24,52 @@ steps:
       repo: kernel528/httpd
       tags:
         - latest
-        - 2.4.62
-        - 2.4.62-${DRONE_COMMIT:0:8}-drone-build-${DRONE_BUILD_NUMBER}
+        - '2.4'
+        - '2.4-drone-build-${DRONE_BUILD_NUMBER}-amd64'
+        - '2.4.62'
+        - '2.4.62-drone-build-${DRONE_BUILD_NUMBER}-amd64'
 
-  # Test image
-  - name: docker-test
+  # Slack notification
+  - name: slack-notification
+    image: plugins/slack
+    when:
+      status:
+        - failure
+        - success
+    settings:
+      webhook:
+        from_secret: slack_webhook_drone_alerts
+---
+
+kind: pipeline
+type: docker
+name: main-httpd-amd64
+
+trigger:
+  event:
+    - push
+    - tag
+  branch:
+    - main
+
+# Build the docker image for the main branch & tagged release
+steps:
+  - name: main-docker-image-build
+    image: plugins/docker
+    when:
+      event:
+        - tag
+    settings:
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      repo: kernel528/httpd
+      tags:
+        - ${DRONE_TAG}
+
+  # Test docker image
+  - name: latest-httpd-amd64-test
     image: kernel528/httpd:latest
     when:
       branch:
@@ -43,15 +78,15 @@ steps:
         - push
     commands:
       - cat /etc/alpine-release
-      - "httpd -v"
+      - httpd -v
 
   # Slack notification
-  - name: notify
+  - name: slack-notification
     image: plugins/slack
-    settings:
-      webhook:
-        from_secret: slack_webhook_drone_alerts
     when:
       status:
         - failure
         - success
+    settings:
+      webhook:
+        from_secret: slack_webhook_drone_alerts
