@@ -1,25 +1,16 @@
 # Used to track the base repo version.
 * v1.0.0 - Initial commit.
-* v1.0.1 - Updated to trigger rebuild to use alpine 3.8.2 base.
-* v1.1.0 - Updated to trigger build on new drone.
-* v1.2.0 - Updated to build with new drone 1.0.0-rc5
-* v1.3.0 - Updated to use alpine 3.9.2, openjdk8-201.08-r0 and httpd v2.4.38
-* v2.0.0 - Updated to use latest alpine 3.9.2 build, changed folder struture
-* v2.0.1 - Updated to use alpine 3.9.4 and httpd 2.4.39
-* v3.0.0 - Updated to use alpine 3.10.1 and to build straight off kernel528/alpine:3.10.1
-* v4.0.0 - Updated to use alpine 3.11.6 and httpd v2.4.43
-* v4.0.1 - Updated to trigger buld with drone.
-* v4.1.0 - Updated to alpine v3.12.0
-* v4.1.1 - Another attempt to trigger drone build: 2020-06-28, 2, 3
-* v4.1.2 - Updated to httpd-2.4.46
-* v4.1.3 - Updated to alpine v3.12.2
-* v4.1.4 - Updated to alpine v3.12.3
-* v4.2.0 - Updated to alpine 3.14.0, httpd v2.4.48.  Update Dockerfile template.
-* v4.2.1 - Updated to alpine 3.14.2
-* v5.0.0 - Updated to alpine 3.15.0, httpd v2.4.52
-* v5.1.0 - Updated to alpine 3.20.1, httpd v2.4.59
-* v5.1.1 - Uses alpine 3.20.1, updated httpd to v2.4.62
-* v5.1.1a - Updated to trigger test build.
-* v5.1.1b - Updated to trigger test build.
-* v5.1.1c - Updated to alpine v3.20.3
-* v5.1.2 - Updated .drone.yml pipeline to use slack_webhook drone secret.  2024-12-01
+* v2.4.0 - Updated to trigger rebuild to use alpine 3.8.2 base. Aligned on httpd version.
+* v2.4.1 - Updated to trigger build on new drone.
+* v2.4.2 - Updated to build with new drone 1.0.0-rc5
+* v2.4.38 - Updated to use alpine 3.9.2, openjdk8-201.08-r0 and httpd v2.4.38.  Aligned on httpd version.
+* v2.4.39 - Updated to use alpine 3.9.4 and httpd 2.4.39
+* v2.4.43 - Updated to use alpine 3.11.6 and httpd v2.4.43
+* v2.4.46 - Updated to httpd-2.4.46
+* v4.4.48 - Updated to alpine 3.14.0, httpd v2.4.48.  Update Dockerfile template.
+* v2.4.52 - Updated to alpine 3.15.0, httpd v2.4.52
+* v2.4.59 - Updated to alpine 3.20.1, httpd v2.4.59
+* v2.4.62 - Uses alpine 3.20.1, updated httpd to v2.4.62
+* v2.4.62.a - Updated to alpine v3.20.3
+* v2.4.62.b - Updated .drone.yml pipeline to use slack_webhook drone secret.  2024-12-01
+* v2.4.62.c - Updated to alpine v3.21.0, httpd v2.4.62
