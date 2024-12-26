@@ -3,6 +3,9 @@ FROM kernel528/alpine:3.21.0
 
 LABEL maintainer=kernel528@gmail.com
 
+# Set to root user to install packages
+USER root
+
 # ensure www-data user exists
 RUN set -x \
 	&& adduser -u 82 -D -S -G www-data www-data
