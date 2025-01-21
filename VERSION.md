@@ -14,3 +14,4 @@
 * v2.4.62.a - Updated to alpine v3.20.3
 * v2.4.62.b - Updated .drone.yml pipeline to use slack_webhook drone secret.  2024-12-01
 * v2.4.62.c - Updated to alpine v3.21.0, httpd v2.4.62
+* v2.4.62.d - Updated to alpine v3.21.2, httpd v2.4.62
