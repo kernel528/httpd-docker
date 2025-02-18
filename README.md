@@ -4,19 +4,19 @@
 [![Docker Image Size (tag)](https://img.shields.io/docker/image-size/kernel528/httpd/2.4.62)](https://hub.docker.com/r/kernel528/httpd/2.4.62)
 [![Docker Image Version (latest semver)](https://img.shields.io/docker/v/kernel528/httpd?sort=semver)](https://hub.docker.com/r/kernel528/httpd)
 
-# Base Httpd Docker repo
+# Base Httpd Docker repo (arm64 branch)
 
-These images are based on the official httpd docker hub release. The source Dockerfile is used as a base.
+These *arm64* images are based on the official httpd docker hub release. The source Dockerfile is used as a base.
 
 ### Overview
 * The images are based on the kernel528/alpine
 * The httpd versions are broken out into subfolders based on the versions, e.g.
-    * 2.4
+    * 2.4-arm64
 * This repo is based on:  https://github.com/docker-library/httpd
 
 ### How to start:
 ```
-docker run -dit --rm --name httpd-docker --hostname httpd-docker -p 80:80 kernel528/httpd:2.4.48
+docker run -dit --rm --name httpd-docker --hostname httpd-docker -p 80:80 kernel528/httpd:2.4.48-arm64
 ```
 ```
 Open web browser to http://localhost
