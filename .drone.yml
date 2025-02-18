@@ -10,6 +10,12 @@ trigger:
 
 # Build the docker image for arm64 architecture
 steps:
+  - name: setup-qemu
+    image: multiarch/qemu-user-static
+    privileged: true
+    commands:
+      - /bin/qemu-system-arm --version
+
   - name: httpd-image-build-arm64
     image: plugins/docker
     environment:
@@ -54,6 +60,12 @@ trigger:
 
 # Build the docker image for the main branch & tagged release
 steps:
+  - name: setup-qemu
+    image: multiarch/qemu-user-static
+    privileged: true
+    commands:
+      - /bin/qemu-system-arm --version
+
   - name: main-docker-image-build
     image: plugins/docker
     when:
