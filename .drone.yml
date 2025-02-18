@@ -1,33 +1,33 @@
 kind: pipeline
 type: docker
-name: httpd-amd64
+name: httpd-arm64
 
 trigger:
   branch:
-    - '2.4'
+    - '2.4-arm64'
   event:
     - pull_request
 
-# Build the docker image for amd64 architecture
+# Build the docker image for arm64 architecture
 steps:
-  - name: httpd-image-build-amd64
+  - name: httpd-image-build-arm64
     image: plugins/docker
     environment:
       DOCKER_BUILDKIT: 1
     settings:
       platforms:
-        - linux/amd64
+        - linux/arm64
       username:
         from_secret: docker_username
       password:
         from_secret: docker_password
       repo: kernel528/httpd
       tags:
-        - latest
-        - '2.4'
-        - '2.4-drone-build-${DRONE_BUILD_NUMBER}-amd64'
-        - '2.4.62'
-        - '2.4.62-drone-build-${DRONE_BUILD_NUMBER}-amd64'
+        - latest-arm64
+        - '2.4-arm64'
+        - '2.4-arm64-drone-build-${DRONE_BUILD_NUMBER}-arm64'
+        - '2.4.62-arm64'
+        - '2.4.62-arm64-drone-build-${DRONE_BUILD_NUMBER}-arm64'
 
   # Slack notification
   - name: slack-notification
@@ -43,14 +43,14 @@ steps:
 
 kind: pipeline
 type: docker
-name: main-httpd-amd64
+name: main-httpd-arm64
 
 trigger:
   event:
     - push
     - tag
   branch:
-    - main
+    - main-arm64
 
 # Build the docker image for the main branch & tagged release
 steps:
@@ -69,11 +69,11 @@ steps:
         - ${DRONE_TAG}
 
   # Test docker image
-  - name: latest-httpd-amd64-test
-    image: kernel528/httpd:latest
+  - name: latest-httpd-arm64-test
+    image: kernel528/httpd:latest-arm64
     when:
       branch:
-        - main
+        - main-arm64
       event:
         - push
     commands:
