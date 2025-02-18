@@ -25,9 +25,9 @@ steps:
       tags:
         - latest-arm64
         - '2.4-arm64'
-        - '2.4-arm64-drone-build-${DRONE_BUILD_NUMBER}-arm64'
+        - '2.4-drone-build-${DRONE_BUILD_NUMBER}-arm64'
         - '2.4.62-arm64'
-        - '2.4.62-arm64-drone-build-${DRONE_BUILD_NUMBER}-arm64'
+        - '2.4.62-drone-build-${DRONE_BUILD_NUMBER}-arm64'
 
   # Slack notification
   - name: slack-notification
