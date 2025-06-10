@@ -16,4 +16,4 @@
 * v2.4.62.c - Updated to alpine v3.21.0, httpd v2.4.62
 * v2.4.62.d - Updated to alpine v3.21.2, httpd v2.4.62
 * v2.4.63   - Updated to alpine v3.21.3, httpd v2.4.63
-* v2.4.63-3.22  - Updated httpd v2.4.63 to use alpine v3.22.0
+* v2.4.63-3.22  - Updated httpd v2.4.63 to use alpine v3.22.0. Updated version reference info.
