@@ -1,5 +1,5 @@
 # Based on https://github.com/docker-library/httpd/blob/3056c115a9f3c2467cc6f67470cfded70c4adc64/2.4/alpine/Dockerfile
-FROM kernel528/alpine:3.22.1
+FROM kernel528/alpine:3.22.1.09
 
 LABEL maintainer=kernel528@gmail.com
 
@@ -32,8 +32,8 @@ RUN set -eux; \
 		perl \
 	;
 
-ENV HTTPD_VERSION 2.4.64
-ENV HTTPD_SHA256 120b35a2ebf264f277e20f9a94f870f2063342fbff0861404660d7dd0ab1ac29
+ENV HTTPD_VERSION 2.4.65
+ENV HTTPD_SHA256 58b8be97d9940ec17f7656c0c6b9f41b618aac468b894b534148e3296c53b8b3
 
 # https://httpd.apache.org/security/vulnerabilities_24.html
 ENV HTTPD_PATCHES=""

@@ -18,3 +18,4 @@
 * v2.4.63   - Updated to alpine v3.21.3, httpd v2.4.63
 * v2.4.63-3.22.0 - Updated httpd v2.4.63 to use alpine v3.22.0. Updated version reference info.
 * v2.4.64-3.22.1 - Updated to httpd v2.4.64 and kernel528/3.22.1.
+* v2.4.65-3.22.1.09 - Updated to httpd v2.4.65 and kernel528/3.22.1.09.
