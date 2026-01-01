@@ -20,3 +20,4 @@
 * v2.4.64-3.22.1 - Updated to httpd v2.4.64 and kernel528/alpine:3.22.1
 * v2.4.65-3.22.1.09 - Updated to httpd v2.4.65 and kernel528/alpine:3.22.1.09
 * v2.4.65-3.22.2 - Updated base image to kernel528/alpine:3.22.2
+* v2.4.66-3.23.2 - Updated base image to kernel528/alpine:3.23.2 and httpd v2.4.66.
