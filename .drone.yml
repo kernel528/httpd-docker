@@ -23,13 +23,12 @@ steps:
         from_secret: docker_password
       repo: kernel528/httpd
       tags:
-        - latest
         - '2.4'
         - '2.4-drone-build-${DRONE_BUILD_NUMBER}-amd64'
         - '2.4.66'
         - '2.4.66-drone-build-${DRONE_BUILD_NUMBER}-amd64'
-        - '2.4.65-3.23.2'
-        - '2.4.66-3.23.2-drone-build-${DRONE_BUILD_NUMBER}-amd64'
+        - '2.4.66-3.23.3'
+        - '2.4.66-3.23.3-drone-build-${DRONE_BUILD_NUMBER}-amd64'
 
   # Slack notification
   - name: slack-notification
@@ -69,6 +68,7 @@ steps:
       repo: kernel528/httpd
       tags:
         - ${DRONE_TAG}
+        - latest
 
   # Test docker image
   - name: latest-httpd-amd64-test
