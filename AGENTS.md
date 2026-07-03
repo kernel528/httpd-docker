@@ -10,11 +10,11 @@
 ## Build, Test, and Development Commands
 - Build locally:
   ```sh
-  docker build -t kernel528/httpd:2.4.66-3.23.3 -f Dockerfile .
+  docker build -t kernel528/httpd:2.4.68-3.24.1 -f Dockerfile .
   ```
 - Run a container:
   ```sh
-  docker run -dit --rm --name httpd --hostname httpd -p 80:80 kernel528/httpd:2.4.66-3.23.3
+  docker run -dit --rm --name httpd --hostname httpd -p 80:80 kernel528/httpd:2.4.68-3.24.1
   ```
 - Verify version:
   ```sh
@@ -31,7 +31,7 @@
 - If adjusting config files, confirm the server starts and serves `htdocs/`.
 
 ## Commit & Pull Request Guidelines
-- Commit messages are concise and descriptive (e.g., “Updated base image to kernel528/alpine:3.23.3.”).
+- Commit messages are concise and descriptive (e.g., “Updated base image to kernel528/alpine:3.24.1.”).
 - Branch flow: version branch → `2.4` → `main`, then tag from `main`.
 - PRs should update `VERSION.md`, `README.md`, and `.drone.yml` when tags change.
 
