@@ -1,7 +1,7 @@
 # Version History (Httpd Image)
 Notes:
 - Versions track the httpd release and the Alpine base where applicable.
-- Suffixes like `-3.23.3` indicate the `kernel528/alpine` base tag used.
+- Suffixes like `-3.24.1` indicate the `kernel528/alpine` base tag used.
 
 - v1.0.0: Initial commit.
 - v2.4.0: Trigger rebuild to use alpine 3.8.2 base; aligned on httpd version.
@@ -26,3 +26,4 @@ Notes:
 - v2.4.65-3.22.2: Updated base image to kernel528/alpine:3.22.2.
 - v2.4.66-3.23.2: Updated base image to kernel528/alpine:3.23.2 and httpd 2.4.66.
 - v2.4.66-3.23.3: Updated base image to kernel528/alpine:3.23.3.
+- v2.4.68-3.24.1: Updated base image to kernel528/alpine:3.24.1 and httpd 2.4.68.
