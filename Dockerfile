@@ -1,5 +1,5 @@
 # Based on https://github.com/docker-library/httpd/blob/master/2.4/alpine/Dockerfile
-FROM kernel528/alpine:3.24.1
+FROM kernel528/alpine:3.24.1_1
 
 LABEL maintainer=kernel528@gmail.com
 
