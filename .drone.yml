@@ -27,8 +27,8 @@ steps:
         - '2.4-drone-build-${DRONE_BUILD_NUMBER}-amd64'
         - '2.4.68'
         - '2.4.68-drone-build-${DRONE_BUILD_NUMBER}-amd64'
-        - '2.4.68-3.24.1'
-        - '2.4.68-3.24.1-drone-build-${DRONE_BUILD_NUMBER}-amd64'
+        - '2.4.68-3.24.1_1'
+        - '2.4.68-3.24.1_1-drone-build-${DRONE_BUILD_NUMBER}-amd64'
 
   # Slack notification
   - name: slack-notification
