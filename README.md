@@ -13,6 +13,14 @@ These images are based on the official httpd docker hub release. The source Dock
 - httpd version line: `2.4`
 - Upstream reference: https://github.com/docker-library/httpd
 
+## Repository Relationships and Refresh Policy
+
+This repository is an independent image project coordinated by [`docker-workspace`](https://github.com/kernel528/docker-workspace). Its direct upstream custom base is [`kernel528/alpine`](https://github.com/kernel528/alpine-docker).
+
+[`www.kernelsanders.biz`](https://github.com/kernel528/www.kernelsanders.biz) builds its website image from `kernel528/httpd`. After publishing and validating a new immutable HTTPD tag, refresh the website in a separate branch/PR/release by updating its Dockerfile base tag and testing the rendered site. Only after the website image is published should [`docker-swarm`](https://github.com/kernel528/docker-swarm) update `kernelsanders-stack.yml`.
+
+Refresh sequence: `alpine-docker` -> `httpd-docker` -> `www.kernelsanders.biz` -> `docker-swarm`.
+
 ## Build
 ```
 docker build -t kernel528/httpd:2.4.68-3.24.1_1 -f Dockerfile .
