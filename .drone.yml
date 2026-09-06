@@ -23,12 +23,8 @@ steps:
         from_secret: docker_password
       repo: kernel528/httpd
       tags:
-        - '2.4'
-        - '2.4-drone-build-${DRONE_BUILD_NUMBER}-amd64'
-        - '2.4.68'
-        - '2.4.68-drone-build-${DRONE_BUILD_NUMBER}-amd64'
-        - '2.4.68-3.24.1_1'
-        - '2.4.68-3.24.1_1-drone-build-${DRONE_BUILD_NUMBER}-amd64'
+        - 'pr-${DRONE_PULL_REQUEST}-build-${DRONE_BUILD_NUMBER}-amd64'
+      dry_run: true
 
   # Slack notification
   - name: slack-notification
@@ -48,10 +44,7 @@ name: main-httpd-amd64
 
 trigger:
   event:
-    - push
     - tag
-  branch:
-    - main
 
 # Build the docker image for the main branch & tagged release
 steps:
@@ -69,18 +62,6 @@ steps:
       tags:
         - ${DRONE_TAG}
         - latest
-
-  # Test docker image
-  - name: latest-httpd-amd64-test
-    image: kernel528/httpd:latest
-    when:
-      branch:
-        - main
-      event:
-        - push
-    commands:
-      - cat /etc/alpine-release
-      - httpd -v
 
   # Slack notification
   - name: slack-notification
