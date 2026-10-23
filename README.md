@@ -23,12 +23,12 @@ Refresh sequence: `alpine-docker` -> `httpd-docker` -> `www.kernelsanders.biz` -
 
 ## Build
 ```
-docker build -t kernel528/httpd:2.4.68-3.24.1_1 -f Dockerfile .
+docker build -t kernel528/httpd:2.4.68-3.24.3_1 -f Dockerfile .
 ```
 
 ## Run
 ```
-docker run -dit --rm --name httpd-docker --hostname httpd-docker -p 80:80 kernel528/httpd:2.4.68-3.24.1_1
+docker run -dit --rm --name httpd-docker --hostname httpd-docker -p 80:80 kernel528/httpd:2.4.68-3.24.3_1
 ```
 ```
 Open web browser to http://localhost
@@ -42,7 +42,7 @@ COPY ./my-httpd.conf /usr/local/apache2/conf/httpd.conf
 
 ## Custom content (htdocs)
 ```
-docker run -dit --rm --name httpd --hostname httpd -p 80:80 -v "$PWD/htdocs":/usr/local/apache2/htdocs/ kernel528/httpd:2.4.68-3.24.1_1
+docker run -dit --rm --name httpd --hostname httpd -p 80:80 -v "$PWD/htdocs":/usr/local/apache2/htdocs/ kernel528/httpd:2.4.68-3.24.3_1
 ```
 
 ## Authors
