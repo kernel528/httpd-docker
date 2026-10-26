@@ -99,6 +99,10 @@ RUN set -eux; \
 # see https://httpd.apache.org/download.cgi#verify
 	ddist 'httpd.tar.bz2.asc' "httpd/httpd-$HTTPD_VERSION.tar.bz2.asc"; \
 	export GNUPGHOME="$(mktemp -d)"; \
+	approvedKeysHome="$(mktemp -d)"; \
+	ddist 'httpd-keys' 'httpd/KEYS'; \
+	gpg --homedir "$approvedKeysHome" --batch --import httpd-keys; \
+	rm httpd-keys; \
 # $ docker run --rm buildpack-deps:bookworm-curl bash -c 'wget -qO- https://downloads.apache.org/httpd/KEYS | gpg --batch --import &> /dev/null && gpg --batch --list-keys --with-fingerprint --with-colons' | awk -F: '$1 == "pub" && $2 == "-" { pub = 1 } pub && $1 == "fpr" { fpr = $10 } $1 == "sub" { pub = 0 } pub && fpr && $1 == "uid" && $2 == "-" { print "#", $10; print "\t\t" fpr " \\"; pub = 0 }'
 	for key in \
 # Rodent of Unusual Size (DSA) <coar@ACM.Org>
@@ -170,8 +174,11 @@ RUN set -eux; \
 # Stefan Eissing (icing) <stefan@eissing.org>
 		26F51EF9A82F4ACB43F1903ED377C9E7D1944C66 \
 	; do \
-		gpg --batch --keyserver keyserver.ubuntu.com --recv-keys "$key"; \
+		gpg --homedir "$approvedKeysHome" --batch --export "$key" >> "$GNUPGHOME/httpd-approved-keys.gpg"; \
 	done; \
+	test -s "$GNUPGHOME/httpd-approved-keys.gpg"; \
+	gpg --batch --import "$GNUPGHOME/httpd-approved-keys.gpg"; \
+	rm -rf "$approvedKeysHome" "$GNUPGHOME/httpd-approved-keys.gpg"; \
 	gpg --batch --verify httpd.tar.bz2.asc httpd.tar.bz2; \
 	command -v gpgconf && gpgconf --kill all || :; \
 	rm -rf "$GNUPGHOME" httpd.tar.bz2.asc; \
