@@ -1,36 +1,90 @@
 kind: pipeline
 type: docker
-name: httpd-amd64
+name: httpd-rootless-image-validation
+
+node:
+  ci-role: rootless-image-smoke
+  platform: linux-amd64
 
 trigger:
+  repo:
+    - kernel528/httpd-docker
+  branch:
+    - '2.4'
+    - main
+  event:
+    - pull_request
+    - push
+    - custom
+
+steps:
+  - name: build-and-smoke
+    image: docker:27-cli
+    environment:
+      DOCKER_HOST: unix:///var/run/docker.sock
+      DOCKER_BUILDKIT: "0"
+    commands:
+      - scripts/ci-rootless-httpd-smoke.sh
+    volumes:
+      - name: podman-socket
+        path: /var/run/docker.sock
+
+volumes:
+  - name: podman-socket
+    host:
+      path: /run/user/1001/podman/podman.sock
+
+---
+
+kind: pipeline
+type: docker
+name: httpd-maintenance-candidate
+
+trigger:
+  repo:
+    - kernel528/httpd-docker
   branch:
     - '2.4'
   event:
-    - pull_request
+    - push
 
-# Build the docker image for amd64 architecture
-steps:
-  - name: httpd-image-build-amd64
-    image: plugins/docker
+services:
+  - name: docker
+    image: docker:27.5.1-dind
+    privileged: true
     environment:
-      DOCKER_BUILDKIT: 1
-    settings:
-      platforms:
-        - linux/amd64
-      username:
-        from_secret: docker_username
-      password:
-        from_secret: docker_password
-      repo: kernel528/httpd
-      tags:
-        - '2.4'
-        - '2.4-drone-build-${DRONE_BUILD_NUMBER}-amd64'
-        - '2.4.69'
-        - '2.4.69-drone-build-${DRONE_BUILD_NUMBER}-amd64'
-        - '2.4.69-3.24.3_1'
-        - '2.4.69-3.24.3_1-drone-build-${DRONE_BUILD_NUMBER}-amd64'
+      DOCKER_TLS_CERTDIR: ""
+    volumes:
+      - name: candidate-dockersock
+        path: /var/run
 
-  # Slack notification
+steps:
+  - name: build-and-smoke-candidate
+    image: docker:27.5.1-cli
+    environment:
+      DOCKER_HOST: unix:///var/run/docker.sock
+      HTTPD_IMAGE_REPO: kernel528/httpd
+    volumes:
+      - name: candidate-dockersock
+        path: /var/run
+    commands:
+      - scripts/ci-build-httpd-candidate.sh
+
+  - name: publish-candidate
+    image: docker:27.5.1-cli
+    environment:
+      DOCKER_HOST: unix:///var/run/docker.sock
+      HTTPD_IMAGE_REPO: kernel528/httpd
+      DOCKER_USERNAME:
+        from_secret: docker_username
+      DOCKER_PASSWORD:
+        from_secret: docker_password
+    volumes:
+      - name: candidate-dockersock
+        path: /var/run
+    commands:
+      - scripts/ci-publish-httpd-candidate.sh
+
   - name: slack-notification
     image: plugins/slack
     when:
@@ -40,6 +94,11 @@ steps:
     settings:
       webhook:
         from_secret: slack_webhook_drone_alerts
+
+volumes:
+  - name: candidate-dockersock
+    temp: {}
+
 ---
 
 kind: pipeline
@@ -47,42 +106,14 @@ type: docker
 name: main-httpd-amd64
 
 trigger:
-  event:
-    - push
-    - tag
+  repo:
+    - kernel528/httpd-docker
   branch:
     - main
+  event:
+    - push
 
-# Build the docker image for the main branch & tagged release
 steps:
-  - name: main-docker-image-build
-    image: plugins/docker
-    when:
-      event:
-        - tag
-    settings:
-      username:
-        from_secret: docker_username
-      password:
-        from_secret: docker_password
-      repo: kernel528/httpd
-      tags:
-        - ${DRONE_TAG}
-        - latest
-
-  # Test docker image
-  - name: latest-httpd-amd64-test
-    image: kernel528/httpd:latest
-    when:
-      branch:
-        - main
-      event:
-        - push
-    commands:
-      - cat /etc/alpine-release
-      - httpd -v
-
-  # Slack notification
   - name: slack-notification
     image: plugins/slack
     when:
@@ -92,3 +123,79 @@ steps:
     settings:
       webhook:
         from_secret: slack_webhook_drone_alerts
+
+---
+
+kind: pipeline
+type: docker
+name: httpd-immutable-release
+
+# Release tags are manually created from a reviewed main commit. Drone tag
+# events are not branch-associated; the build script validates tag metadata.
+trigger:
+  repo:
+    - kernel528/httpd-docker
+  event:
+    - tag
+
+services:
+  - name: docker
+    image: docker:27.5.1-dind
+    privileged: true
+    environment:
+      DOCKER_TLS_CERTDIR: ""
+    volumes:
+      - name: release-dockersock
+        path: /var/run
+
+steps:
+  - name: build-and-smoke-release
+    image: docker:27.5.1-cli
+    environment:
+      DOCKER_HOST: unix:///var/run/docker.sock
+      HTTPD_IMAGE_REPO: kernel528/httpd
+    volumes:
+      - name: release-dockersock
+        path: /var/run
+    commands:
+      - scripts/ci-build-httpd-release.sh
+
+  - name: check-immutable-tag-unused
+    image: docker:27.5.1-cli
+    environment:
+      DOCKER_HOST: unix:///var/run/docker.sock
+      HTTPD_IMAGE_REPO: kernel528/httpd
+    volumes:
+      - name: release-dockersock
+        path: /var/run
+    commands:
+      - scripts/ci-check-httpd-release-tag-unused.sh
+
+  - name: publish-immutable-release
+    image: docker:27.5.1-cli
+    environment:
+      DOCKER_HOST: unix:///var/run/docker.sock
+      HTTPD_IMAGE_REPO: kernel528/httpd
+      DOCKER_USERNAME:
+        from_secret: docker_username
+      DOCKER_PASSWORD:
+        from_secret: docker_password
+    volumes:
+      - name: release-dockersock
+        path: /var/run
+    commands:
+      - scripts/ci-publish-httpd-release.sh
+
+  - name: slack-notification
+    image: plugins/slack
+    when:
+      status:
+        - failure
+        - success
+    settings:
+      webhook:
+        from_secret: slack_webhook_drone_alerts
+
+volumes:
+  - name: release-dockersock
+    temp: {}
