@@ -30,3 +30,4 @@ Notes:
 - v2.4.68-3.24.1_1: Rebuilt httpd 2.4.68 on kernel528/alpine:3.24.1_1.
 - v2.4.69-3.24.3_1: Updated to httpd 2.4.69 on kernel528/alpine:3.24.3_1.
 - v2.4.69-3.24.3_3: Refreshed base to kernel528/alpine:3.24.3_3.
+- v2.4.69-3.24.4_1: Refreshed base to kernel528/alpine:3.24.4_1.
